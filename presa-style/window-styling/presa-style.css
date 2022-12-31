@@ -1,0 +1,102 @@
+:root {
+    --window-color: rgba( 255, 255, 255, 0.25 );
+
+    --border-width: 1px;
+    --border-style: solid;
+    --border-opacity: 0.18;
+    --border-color: rbga(255,255,255,0.18);
+    --border-hover-opacity: 0.25;
+    --border-active-opacity: 0.3;
+    
+    --hover-border: var(--border-width) var(--border-style);
+    --active-border: var(--border-width) var(--border-style);
+    --window-border: var(--border-width) var(--border-style) var(--window-color);
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-image: url("./images/retro-80s-ride-wg-3840x2160.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
+.window {
+    padding: 1.5rem 3rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2rem;
+
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    
+    left: 50%;
+    top: 50%;
+    
+    transform: translate(-50%, -50%);
+
+    transition: all 0.1s ease-in-out;
+
+    background: var(--window-color);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border: var(--window-border);
+}
+
+.popup-btns {
+    transition: inherit;
+
+    display: flex;
+
+    width: 100%;
+
+    justify-content: space-around;
+}
+
+#popup-btn-no {
+    --r: 255;
+    --g: 70;
+    --b: 70;
+    --bg-color: var(--r), var(--g), var(--b);
+    --border-color: var(--r), 0, 0;
+}
+
+#popup-btn-yes {
+    --r: 100;
+    --g: 255;
+    --b: 100;
+    --bg-color: var(--r), var(--g), var(--b);
+    --border-color: 0, var(--g), 0;
+}
+
+.glass-btn {
+    transition: inherit;
+
+    border-radius: 0px;
+
+    background: rgba(var(--bg-color), 0.6);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border: var(--border-width) var(--border-style) rgba(var(--border-color), 0.3);
+}
+
+.glass-btn:hover {
+    background: rgba( var(--bg-color), 0.9 );
+    box-shadow: 0 4px 16px 0 rgba( 0, 0, 0, 0.5 );
+    border: var(--hover-border) rgba(var(--border-color), 0.6);
+}
+
+.glass-btn:active {
+    background: rgba(var(--bg-color), 0.5);
+    filter: brightness(75%);
+    box-shadow: 0 8px 32px 0 rgba( 255, 255, 255, 0.5 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border: var(--active-border) rgba(var(--border-color), 0.3);
+}
