@@ -87,7 +87,9 @@ function PElem(parentElement) {
 
     //Testing vv
     this.addText = (text) => {
-        this.DOMNode.textContent = text;
+        const textNode = document.createElement("p");
+        textNode.innerHTML = text;
+        this.DOMNode.appendChild(textNode);
         return;
     };
 }
@@ -96,26 +98,75 @@ function PWindow(parentElement) {
     PElem.call(this, parentElement);
 
     this.DOMNode.classList.add("presa-window");
-    this.DOMNode.id =
-        //Event listeners for dragging
+    this.id = newId();
+    this.DOMNode.id = this.id;
 
-        this.DOMNode.addEventListener("mousedown", () => {
-            this.DOMNode.classList.add("drag-active");
-            this.DOMNode.addEventListener("mousemove", onDrag);
-        });
-    document.addEventListener("mouseup", () => {
-        this.DOMNode.classList.remove("drag-active");
-        this.DOMNode.removeEventListener("mousemove", onDrag);
-    });
-
-    //Utility funnction for dragging
-    function onDrag({ movementX, movementY }) {
-        let getStyle = window.getComputedStyle(this.DOMNode);
-        let leftVal = parseInt(getStyle.left);
-        let topVal = parseInt(getStyle.top);
-        this.DOMNode.style.left = `${leftVal + movementX}px`;
-        this.DOMNode.style.top = `${topVal + movementY}px`;
+    this.display = () => {
+        this.parentElement.appendChild(this.DOMNode);
+        dragElement(document.getElementById(this.id));
     }
+    //Event listeners for dragging
+
+
+    function dragElement(elmnt) {
+      let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+      if (document.getElementById(elmnt.id + "header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+      } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+      }
+
+      function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+        return false;
+      }
+
+      function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+      }
+
+      function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+    }
+    // this.DOMNode.addEventListener("mousedown", () => {
+    //     this.DOMNode.classList.add("drag-active");
+    //     this.DOMNode.addEventListener("mousemove", onDrag);
+    // });
+    // document.addEventListener("mouseup", () => {
+    //     this.DOMNode.classList.remove("drag-active");
+    //     this.DOMNode.removeEventListener("mousemove", onDrag);
+    // });
+
+    // //Utility funnction for dragging
+    // function onDrag({ movementX, movementY }) {
+    //     const thisElem = document.getElementById(this.id);
+    //     let getStyle = window.getComputedStyle(thisElem);
+    //     let leftVal = parseInt(getStyle.left);
+    //     let topVal = parseInt(getStyle.top);
+    //     thisElem.style.left = `${leftVal + 5*movementX}px`;
+    //     thisElem.style.top = `${topVal + 5*movementY}px`;
+    // }
 }
 
 function PopUp(parentElement) {
