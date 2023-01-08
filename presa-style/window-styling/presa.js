@@ -1,4 +1,4 @@
-function PElem() {
+function PElem(parentElement) {
     //New DOM element for this element
 
     this.DOMNode = document.createElement("div");
@@ -14,6 +14,10 @@ function PElem() {
     };
 
     //Basic relationship definitions
+    if (parentElement) {
+        this.parentElement = parentElement;
+    }
+
     this.setParentElement = (parentElement) => {
         this.parentElement = parentElement;
     };
@@ -81,22 +85,27 @@ function PElem() {
         this.blur = blur;
     };
 
-    return this;
+    //Testing vv
+    this.addText = (text) => {
+        this.DOMNode.textContent = text;
+        return;
+    };
 }
 
-function PWindow() {
-    this.prototype = new PElem();
+function PWindow(parentElement) {
+    PElem.call(this, parentElement);
 
+    this.DOMNode.classList.add("presa-window");
+    this.DOMNode.id =
+        //Event listeners for dragging
 
-    //Event listeners for dragging
-
-    this.DOMNode.addEventListener("mousedown", () => {
-    this.DOMNode.classList.add("drag-active");
-    this.DOMNode.addEventListener("mousemove", onDrag);
-    });
+        this.DOMNode.addEventListener("mousedown", () => {
+            this.DOMNode.classList.add("drag-active");
+            this.DOMNode.addEventListener("mousemove", onDrag);
+        });
     document.addEventListener("mouseup", () => {
-    this.DOMNode.classList.remove("drag-active");
-    this.DOMNode.removeEventListener("mousemove", onDrag);
+        this.DOMNode.classList.remove("drag-active");
+        this.DOMNode.removeEventListener("mousemove", onDrag);
     });
 
     //Utility funnction for dragging
@@ -109,8 +118,8 @@ function PWindow() {
     }
 }
 
-function PopUp() {
-    this.prototype = new PElem();
+function PopUp(parentElement) {
+    PElem.call(this, parentElement);
 
     this.setPrompt = (prompt) => {
         this.prompt = prompt;
@@ -119,11 +128,67 @@ function PopUp() {
 }
 
 function Modal(parentElement) {
-    this.prototype = new PopUp(parentElement);
+    PopUp.call(this, parentElement);
 
     this.addBtn = 2;
 }
 
 function Button(parentElement) {
-    this.prototype = new PElem(parentElement);
+    PElem.call(this, parentElement);
 }
+
+// Utility functions
+
+function newId() {
+    const id = "" + randomString(7, "aA") + randomString(3, "#");
+
+    return id;
+}
+
+//Generates a random string of characters
+//Used like this:
+//   console.log(randomString(16, 'aA'));
+//   console.log(randomString(32, '#aA'));
+//   console.log(randomString(64, '#A!'));
+
+function randomString(length, chars) {
+    let mask = "";
+    const [lower, upper, numbers, symbols] = [
+        chars.indexOf("a") > -1,
+        chars.indexOf("A") > -1,
+        chars.indexOf("#") > -1,
+        chars.indexOf("!") > -1,
+    ];
+    if (lower) mask += "abcdefghijklmnopqrstuvwxyz";
+    if (upper) mask += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (numbers) mask += "0123456789";
+    if (symbols) mask += `~\`!@#$%^&*()_+-={}[]:";'<>?,./|\\`;
+
+    let result = "";
+
+    if (lower || upper || numbers || symbols) {
+        for (let i = length; i > 0; --i)
+            result += mask[Math.floor(Math.random() * mask.length)];
+    } else {
+        // I dont know what this means or how it's supposed to work
+        // When I wrote this, both God and I knew what this was
+        // Now only God knows.
+        for (var i = length; i > 0; --i)
+            result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+}
+
+////////////////////////////////////////////////////////////////
+//////////////  vv  TESTING GROUNDS, IGNORE  vv  ///////////////
+////////////////////////////////////////////////////////////////
+
+const DOMBody = document.querySelector("body");
+
+const testWindow = new PWindow(DOMBody);
+testWindow.addText("CUM");
+testWindow.display();
+
+////////////////////////////////////////////////////////////////
+//////////////  ^^  TESTING GROUNDS, IGNORE  ^^  ///////////////
+////////////////////////////////////////////////////////////////

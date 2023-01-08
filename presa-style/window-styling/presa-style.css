@@ -21,7 +21,7 @@ body {
     background-position: center center;
 }
 
-.window {
+.presa-window {
     padding: 1.5rem 3rem;
 
     display: flex;
@@ -32,13 +32,6 @@ body {
     justify-content: center;
     align-items: center;
 
-    position: absolute;
-    
-    left: 50%;
-    top: 50%;
-    
-    transform: translate(-50%, -50%);
-
     transition: all 0.1s ease-in-out;
 
     background: var(--window-color);
@@ -46,6 +39,15 @@ body {
     backdrop-filter: blur( 4px );
     -webkit-backdrop-filter: blur( 4px );
     border: var(--window-border);
+}
+
+.popup {
+    position: absolute;
+    
+    left: 50%;
+    top: 50%;
+    
+    transform: translate(-50%, -50%);
 }
 
 .popup-btns {
